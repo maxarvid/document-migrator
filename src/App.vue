@@ -2,11 +2,15 @@
 import { ref } from 'vue';
 import { invoke } from '@tauri-apps/api/core';
 
-const greetMsg = ref('');
+const greetMsg = ref('Do I change?');
 const connectionString = ref('');
 
 async function connect() {
-  greetMsg.value = await invoke('connect', { connectionString: connectionString.value });
+  try {
+    greetMsg.value = await invoke('connect', { connectionString: connectionString.value });
+  } catch (error: any) {
+    greetMsg.value = error;
+  }
 }
 </script>
 

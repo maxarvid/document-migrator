@@ -1,12 +1,19 @@
-// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
+use mongodb::options::ClientOptions;
+
 #[tauri::command]
 async fn connect(connection_string: &str) -> Result<String, String> {
-    // Here you can add your logic to connect to MongoDB using the connection string
-    // For now, we'll just return a success message
-    Ok(format!(
-        "Successfully connected to MongoDB with connection string: {}",
-        connection_string
-    ))
+    match ClientOptions::parse(connection_string).await {
+        Ok(client_options) => {
+            println!("Successfully parsed connection string.");
+            Ok(format!(
+                "Successfully connected to MongoDB with options: {:?}",
+                client_options
+            ))
+        }
+        Err(e) => {
+            Err(format!("Failed to parse connection string: {}", e))
+        }
+    }
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
