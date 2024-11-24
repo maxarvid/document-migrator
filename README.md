@@ -1,6 +1,13 @@
-# Tauri + Vue + TypeScript
+# 🚧 [WIP] Document Migrator 🗃️
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+This is a Tauri-Vue side project to build a desktop tool to facilitate migration from a document type database to a relational database. If the [WIP] is still up, then we are not even in alpha. The vision for the MVP is to: 
+- allow a user to connect to a MongoDB database
+- have the tool analyze the collections
+- identify key discrepancies between the documents
+- allow the user to make decisions about the discrepancies
+- allow the user to establish relations between the collections
+- spit out a `pg_dump` with the new Postgres database
+- 💰
 
 ## Recommended IDE Setup
 
