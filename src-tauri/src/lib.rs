@@ -1,18 +1,23 @@
-use mongodb::options::ClientOptions;
+use mongodb::{bson::doc, options::ClientOptions, Client};
 
 #[tauri::command]
 async fn connect(connection_string: &str) -> Result<String, String> {
-    match ClientOptions::parse(connection_string).await {
-        Ok(client_options) => {
-            println!("Successfully parsed connection string.");
-            Ok(format!(
-                "Successfully connected to MongoDB with options: {:?}",
-                client_options
-            ))
-        }
-        Err(e) => {
-            Err(format!("Failed to parse connection string: {}", e))
-        }
+    let client_options = match ClientOptions::parse(connection_string).await {
+        Ok(options) => options,
+        Err(e) => return Err(format!("Failed to parse connection string: {}", e)),
+    };
+    let client = match Client::with_options(client_options) {
+        Ok(client) => client,
+        Err(e) => return Err(format!("Failed to create client: {}", e)),
+    };
+
+    // Ping the server to see if you can connect to the deployment.
+    match client.database("admin").run_command(doc! {"ping": 1}).await {
+        Ok(_) => Ok(format!(
+            "Successfully connected to MongoDB with connection string: {}",
+            connection_string
+        )),
+        Err(e) => Err(format!("Failed to connect to MongoDB: {}", e)),
     }
 }
 
