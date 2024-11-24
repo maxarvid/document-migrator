@@ -6,8 +6,7 @@ const greetMsg = ref('');
 const connectionString = ref('');
 
 async function connect() {
-  greetMsg.value = 'You tried to connect!';
-  await invoke('connect', { connectionString: connectionString.value });
+  greetMsg.value = await invoke('connect', { connectionString: connectionString.value });
 }
 </script>
 
@@ -36,7 +35,7 @@ async function connect() {
       >
         Connect
       </button>
+      <p>{{ greetMsg }}</p>
     </form>
-    <p>{{ greetMsg }}</p>
   </main>
 </template>
